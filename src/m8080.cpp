@@ -151,4 +151,24 @@ void m8080::CCPU::step() {
     byte instruction = fetchByte();
 
     // and execute it
+    // LXI
+    if(instruction == 0x01) {
+        C = fetchByte();
+        B = fetchByte();
+        return;
+    }
+    if(instruction == 0x11) {
+        E = fetchByte();
+        D = fetchByte();
+        return;
+    }
+    if(instruction == 0x21) {
+        L = fetchByte();
+        H = fetchByte();
+        return;
+    }
+    if(instruction == 0x31) {
+        SP = fetchWord();
+        return;
+    }
 }
