@@ -171,4 +171,21 @@ void m8080::CCPU::step() {
         SP = fetchWord();
         return;
     }
+
+    // HLT
+    if (instruction == 0x76) {
+        HALT = true;
+        return;
+    }
+
+    // MOV
+    if ((instruction & 0xC0) == 0x40) { // 0b01DDDSSS
+        // get reference to destination 8 bit register
+        byte& dst = interpretRegister((instruction >> 3) & 0b111);
+        // get reference to source 8 bit register
+        byte& src = interpretRegister(instruction & 0b111);
+
+        dst = src;
+        return;
+    }
 }
