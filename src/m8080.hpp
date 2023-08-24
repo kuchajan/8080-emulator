@@ -1,7 +1,6 @@
 #pragma once
 
 namespace m8080 {
-    using sbyte = char;
 	using byte = unsigned char;
 	using word = unsigned short;
 
@@ -9,6 +8,8 @@ namespace m8080 {
 
     class CCPU;
     class CMemory;
+
+    word combineBytes(byte hi, byte lo);
 }
 
 struct m8080::SStatus {
@@ -56,21 +57,31 @@ private:
         SStatus flag;
     };
 
+    //todo: implement queue for interrupts
+    bool INTE : 1; // interrupt enabled
+    bool HALT : 1;
+
     // Internal routines
 
     byte readByte(word address);
     word readWord(word address);
     void writeByte(word address, byte data);
-    void writeWord(word address, word data);
+    //void writeWord(word address, word data);
 
     byte fetchByte();
     word fetchWord();
 
     void push(word data);
     word pop();
+
+    word getWord(byte reg);
+    byte& interpretRegister(byte reg);
 public:
     CCPU(const CMemory & mem);
+    
+    bool READY : 1;
+    bool RESET : 1;
 
-    void reset();
+    void interrupt(byte instruction);
     void step();
 };
