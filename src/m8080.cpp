@@ -188,4 +188,12 @@ void m8080::CCPU::step() {
         dst = src;
         return;
     }
+
+    // MVI
+    if ((instruction & 0xC7) == 0x06) { // 0b00DDD110
+        // get refence to destionation
+        byte& dst = interpretRegister((instruction >> 3) & 0b111);
+
+        dst = fetchByte();
+    }
 }
